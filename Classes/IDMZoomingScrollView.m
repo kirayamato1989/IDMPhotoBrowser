@@ -16,6 +16,7 @@
 - (void)cancelControlHiding;
 - (void)hideControlsAfterDelay;
 - (void)toggleControls;
+- (void)singleTapHandle;
 @end
 
 // Private methods and properties
@@ -254,7 +255,7 @@
 #pragma mark - Tap Detection
 
 - (void)handleSingleTap:(CGPoint)touchPoint {
-	[_photoBrowser performSelector:@selector(toggleControls) withObject:nil afterDelay:0.2];
+	[_photoBrowser performSelector:@selector(singleTapHandle) withObject:nil afterDelay:0.2];
 }
 
 - (void)handleDoubleTap:(CGPoint)touchPoint {
