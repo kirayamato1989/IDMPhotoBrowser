@@ -17,6 +17,9 @@
     // Image
     UIImage *_underlyingImage;
 
+    // placeholder
+    UIImage *_placeholder;
+    
     // Other
     NSString *_caption;
     BOOL _loadingInProgress;
@@ -48,8 +51,8 @@ caption = _caption;
 	return [[IDMPhoto alloc] initWithFilePath:path];
 }
 
-+ (IDMPhoto *)photoWithURL:(NSURL *)url {
-	return [[IDMPhoto alloc] initWithURL:url];
++ (IDMPhoto *)photoWithURL:(NSURL *)url withPlaceholderImage:(UIImage *)placeholder{
+	return [[IDMPhoto alloc] initWithURL:url withPlaceholderImage:placeholder];
 }
 
 + (NSArray *)photosWithImages:(NSArray *)imagesArray {
@@ -78,20 +81,28 @@ caption = _caption;
     return photos;
 }
 
-+ (NSArray *)photosWithURLs:(NSArray *)urlsArray {
++ (NSArray *)photosWithURLs:(NSArray *)urlsArray withPlaceholderImages:(NSArray *)placeholders{
     NSMutableArray *photos = [NSMutableArray arrayWithCapacity:urlsArray.count];
     
-    for (id url in urlsArray) {
+    for (int i = 0; i<urlsArray.count; i++) {
+        id url = urlsArray[i];
+        id image;
+        @try {
+            image = placeholders[i];
+        }
+        @catch (NSException *exception) {
+            image = nil;
+        }
+        
         if ([url isKindOfClass:[NSURL class]]) {
-            IDMPhoto *photo = [IDMPhoto photoWithURL:url];
+            IDMPhoto *photo = [IDMPhoto photoWithURL:url withPlaceholderImage:image];
             [photos addObject:photo];
         }
         else if ([url isKindOfClass:[NSString class]]) {
-            IDMPhoto *photo = [IDMPhoto photoWithURL:[NSURL URLWithString:url]];
+            IDMPhoto *photo = [IDMPhoto photoWithURL:[NSURL URLWithString:url] withPlaceholderImage:image];
             [photos addObject:photo];
         }
-    }
-    
+    }    
     return photos;
 }
 
@@ -111,9 +122,10 @@ caption = _caption;
 	return self;
 }
 
-- (id)initWithURL:(NSURL *)url {
+- (id)initWithURL:(NSURL *)url withPlaceholderImage:(UIImage *)placeholder{
 	if ((self = [super init])) {
 		_photoURL = [url copy];
+        _placeholder = placeholder;
 	}
 	return self;
 }
@@ -168,6 +180,10 @@ caption = _caption;
 	if (self.underlyingImage && (_photoPath || _photoURL)) {
 		self.underlyingImage = nil;
 	}
+}
+
+- (UIImage *)placeholder {
+    return _placeholder;
 }
 
 #pragma mark - Async Loading

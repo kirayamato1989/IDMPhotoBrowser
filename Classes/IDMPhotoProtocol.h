@@ -57,5 +57,5 @@
 // Return nil to display no caption
 - (NSString *)caption;
 
-
+- (UIImage *)placeholder;
 @end

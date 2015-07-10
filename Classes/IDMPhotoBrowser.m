@@ -237,17 +237,17 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     return self;
 }
 
-- (id)initWithPhotoURLs:(NSArray *)photoURLsArray {
+- (id)initWithPhotoURLs:(NSArray *)photoURLsArray placeholderImages:(NSArray *)images{
     if ((self = [self init])) {
-        NSArray *photosArray = [IDMPhoto photosWithURLs:photoURLsArray];
+        NSArray *photosArray = [IDMPhoto photosWithURLs:photoURLsArray withPlaceholderImages:images];
         _photos = [[NSMutableArray alloc] initWithArray:photosArray];
     }
     return self;
 }
 
-- (id)initWithPhotoURLs:(NSArray *)photoURLsArray animatedFromView:(UIView*)view {
+- (id)initWithPhotoURLs:(NSArray *)photoURLsArray placeholderImages:(NSArray *)images animatedFromView:(UIView*)view {
     if ((self = [self init])) {
-        NSArray *photosArray = [IDMPhoto photosWithURLs:photoURLsArray];
+        NSArray *photosArray = [IDMPhoto photosWithURLs:photoURLsArray withPlaceholderImages:images];
         _photos = [[NSMutableArray alloc] initWithArray:photosArray];
         _senderViewForAnimation = view;
     }
@@ -461,8 +461,13 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     } completion:nil];
     
     float scaleFactor = (imageFromView ? imageFromView.size.width : screenWidth) / screenWidth;
-    CGRect finalImageViewFrame = CGRectMake(0, (screenHeight/2)-((imageFromView.size.height / scaleFactor)/2), screenWidth, imageFromView.size.height / scaleFactor);
-    
+    CGRect finalImageViewFrame;
+    if ([[self photoAtIndex:_currentPageIndex] placeholder]) {
+        finalImageViewFrame = CGRectMake(([UIScreen mainScreen].bounds.size.width-imageFromView.size.width)/2.f,([UIScreen mainScreen].bounds.size.height - imageFromView.size.height)/2.f, imageFromView.size.width, imageFromView.size.height);
+    }
+    else{
+        finalImageViewFrame = CGRectMake(0, (screenHeight/2)-((imageFromView.size.height / scaleFactor)/2), screenWidth, imageFromView.size.height / scaleFactor);
+    }
     if(_usePopAnimation)
     {
         [self animateView:resizableImageView

@@ -9,6 +9,7 @@
 #import "IDMZoomingScrollView.h"
 #import "IDMPhotoBrowser.h"
 #import "IDMPhoto.h"
+#import "POP.h"
 
 // Declare private methods of browser
 @interface IDMPhotoBrowser ()
@@ -64,6 +65,7 @@
         _progressView.tag = 101;
         _progressView.thicknessRatio = 0.1;
         _progressView.roundedCorners = NO;
+        _progressView.userInteractionEnabled = NO;
         _progressView.trackTintColor    = browser.trackTintColor    ? self.photoBrowser.trackTintColor    : [UIColor colorWithWhite:0.2 alpha:1];
         _progressView.progressTintColor = browser.progressTintColor ? self.photoBrowser.progressTintColor : [UIColor colorWithWhite:1.0 alpha:1];
         [self addSubview:_progressView];
@@ -98,7 +100,7 @@
 
 // Get and display image
 - (void)displayImage {
-	if (_photo && _photoImageView.image == nil) {
+	if (_photo /*&& _photoImageView.image == nil*/) {
 		// Reset
 		self.maximumZoomScale = 1;
 		self.minimumZoomScale = 1;
@@ -128,8 +130,25 @@
 			// Set zoom to minimum zoom
 			[self setMaxMinZoomScalesForCurrentBounds];
         } else {
-			// Hide image view
-			_photoImageView.hidden = YES;
+			// placeholder
+            UIImage *placeholder;
+            if ([_photo respondsToSelector:@selector(placeholder)]) {
+                placeholder = [_photo placeholder];
+            }
+            
+            _photoImageView.hidden = !placeholder;
+            _photoImageView.image = placeholder;
+            
+            // Setup photo frame
+            CGRect photoImageViewFrame;
+            photoImageViewFrame.origin = CGPointZero;
+            photoImageViewFrame.size = placeholder.size;
+            
+            _photoImageView.frame = photoImageViewFrame;
+            self.contentSize = photoImageViewFrame.size;
+            
+            [self setMaxMinZoomScalesForCurrentBounds];
+            
             
             _progressView.alpha = 1.0f;
 		}
