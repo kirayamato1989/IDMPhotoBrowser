@@ -129,10 +129,7 @@
 			[self setMaxMinZoomScalesForCurrentBounds];
         } else {
 			// Hide image view
-//			_photoImageView.hidden = YES;
-            UIImage *image = [_photo placeholderImage];
-            _photoImageView.image = image;
-            _photoImageView.hidden = !image;
+			_photoImageView.hidden = YES;
             
             _progressView.alpha = 1.0f;
 		}
