@@ -493,6 +493,11 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     float fadeAlpha = 1 - fabs(scrollView.frame.origin.y)/scrollView.frame.size.height;
     
     UIImage *imageFromView = [scrollView.photo underlyingImage];
+    
+    //use placeholderImage
+    if (!imageFromView&&[scrollView.photo respondsToSelector:@selector(placeholder)]) {
+        imageFromView = [scrollView.photo placeholder];
+    }
     //imageFromView = [self rotateImageToCurrentOrientation:imageFromView];
     
     CGRect screenBound = [[UIScreen mainScreen] bounds];
