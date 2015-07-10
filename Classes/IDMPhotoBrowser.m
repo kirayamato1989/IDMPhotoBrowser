@@ -461,13 +461,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     } completion:nil];
     
     float scaleFactor = (imageFromView ? imageFromView.size.width : screenWidth) / screenWidth;
-    CGRect finalImageViewFrame;
-    if ([[self photoAtIndex:_currentPageIndex] placeholder]) {
-        finalImageViewFrame = CGRectMake(([UIScreen mainScreen].bounds.size.width-imageFromView.size.width)/2.f,([UIScreen mainScreen].bounds.size.height - imageFromView.size.height)/2.f, imageFromView.size.width, imageFromView.size.height);
-    }
-    else{
-        finalImageViewFrame = CGRectMake(0, (screenHeight/2)-((imageFromView.size.height / scaleFactor)/2), screenWidth, imageFromView.size.height / scaleFactor);
-    }
+    CGRect finalImageViewFrame = CGRectMake(0, (screenHeight/2)-((imageFromView.size.height / scaleFactor)/2), screenWidth, imageFromView.size.height / scaleFactor);
     if(_usePopAnimation)
     {
         [self animateView:resizableImageView
