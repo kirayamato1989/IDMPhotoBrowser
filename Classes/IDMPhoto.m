@@ -16,9 +16,6 @@
 
     // Image
     UIImage *_underlyingImage;
-
-    // placeholder
-    UIImage *_placeholder;
     
     // Other
     NSString *_caption;
@@ -124,8 +121,8 @@ caption = _caption;
 
 - (id)initWithURL:(NSURL *)url withPlaceholderImage:(UIImage *)placeholder{
 	if ((self = [super init])) {
-		_photoURL = [url copy];
-        _placeholder = placeholder;
+        _photoURL = [url copy];
+        _placeholderImage = placeholder;
 	}
 	return self;
 }
@@ -182,9 +179,6 @@ caption = _caption;
 	}
 }
 
-- (UIImage *)placeholder {
-    return _placeholder;
-}
 
 #pragma mark - Async Loading
 

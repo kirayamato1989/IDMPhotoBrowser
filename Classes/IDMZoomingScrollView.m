@@ -100,7 +100,7 @@
 
 // Get and display image
 - (void)displayImage {
-	if (_photo /*&& _photoImageView.image == nil*/) {
+	if (_photo) {
 		// Reset
 		self.maximumZoomScale = 1;
 		self.minimumZoomScale = 1;
@@ -131,24 +131,27 @@
 			[self setMaxMinZoomScalesForCurrentBounds];
         } else {
 			// placeholder
-            UIImage *placeholder;
-            if ([_photo respondsToSelector:@selector(placeholder)]) {
-                placeholder = [_photo placeholder];
-            }
-            
-            _photoImageView.hidden = !placeholder;
-            _photoImageView.image = placeholder;
-            
-            // Setup photo frame
-            CGRect photoImageViewFrame;
-            photoImageViewFrame.origin = CGPointZero;
-            photoImageViewFrame.size = placeholder.size;
-            
-            _photoImageView.frame = photoImageViewFrame;
-            self.contentSize = photoImageViewFrame.size;
-            
-            [self setMaxMinZoomScalesForCurrentBounds];
-            
+//            UIImage *placeholder;
+//            if ([_photo respondsToSelector:@selector(placeholder)]) {
+//                placeholder = [_photo placeholder];
+//            }
+//            
+//            _photoImageView.hidden = !placeholder;
+//            _photoImageView.image = placeholder;
+//            
+//            // Setup photo frame
+//            CGRect photoImageViewFrame;
+//            photoImageViewFrame.origin = CGPointZero;
+//            photoImageViewFrame.size = placeholder.size;
+//            
+//            _photoImageView.frame = photoImageViewFrame;
+//            self.contentSize = photoImageViewFrame.size;
+//            
+//            [self setMaxMinZoomScalesForCurrentBounds];
+//            
+//            
+//            _progressView.alpha = 1.0f;
+            _photoImageView.hidden = YES;
             
             _progressView.alpha = 1.0f;
 		}
@@ -204,6 +207,10 @@
     // maximum zoom scale to 0.5.
 	if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
 		maxScale = maxScale / [[UIScreen mainScreen] scale];
+		
+		if (maxScale < minScale) {
+			maxScale = minScale * 2;
+		}
 	}
     
 	// Set
