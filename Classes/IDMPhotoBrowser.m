@@ -1205,17 +1205,20 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         
         if(_arrowButtonsChangePhotosAnimated) [self updateToolbar];
         
-        UIView *newSenderView;
-        if ([_delegate respondsToSelector:@selector(photoBrowser:senderViewAtIndex:)]) {
-            newSenderView = [_delegate photoBrowser:self senderViewAtIndex:_currentPageIndex];
-        }
-        if (newSenderView) {
-            _senderViewForAnimation.hidden = NO;
-            _senderViewForAnimation = newSenderView;
-            _senderViewForAnimation.hidden = YES;
-            _senderViewOriginalFrame = [newSenderView.superview convertRect:newSenderView.frame toView:nil];
-            if (self.shouldHideStatusBar) {
-                _senderViewOriginalFrame.origin = CGPointMake(_senderViewOriginalFrame.origin.x, _senderViewOriginalFrame.origin.y + [UIApplication sharedApplication].statusBarFrame.size.height);
+        // if the dismissStyle == IDMPhotoBrowserDismissStyleAllOriginal change the _senderViewOriginalFrame
+        if (self.dismissStyle == IDMPhotoBrowserDismissStyleAllOriginal) {
+            UIView *newSenderView;
+            if ([_delegate respondsToSelector:@selector(photoBrowser:senderViewAtIndex:)]) {
+                newSenderView = [_delegate photoBrowser:self senderViewAtIndex:_currentPageIndex];
+            }
+            if (newSenderView) {
+                _senderViewForAnimation.hidden = NO;
+                _senderViewForAnimation = newSenderView;
+                _senderViewForAnimation.hidden = YES;
+                _senderViewOriginalFrame = [newSenderView.superview convertRect:newSenderView.frame toView:nil];
+                if (self.shouldHideStatusBar) {
+                    _senderViewOriginalFrame.origin = CGPointMake(_senderViewOriginalFrame.origin.x, _senderViewOriginalFrame.origin.y + [UIApplication sharedApplication].statusBarFrame.size.height);
+                }
             }
         }
     }
