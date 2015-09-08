@@ -173,6 +173,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         _displayActionButton = YES;
         _displayArrowButton = YES;
         _displayCounterLabel = NO;
+        _shouldHideStatusBar = YES;
         
         _forceHideStatusBar = NO;
         _usePopAnimation = NO;
@@ -461,7 +462,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         [resizableImageView removeFromSuperview];
         
         //隐藏statusbar
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:self.shouldHideStatusBar];
     };
     
     [UIView animateWithDuration:_animationDuration animations:^{
@@ -565,6 +566,9 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 #pragma mark - Genaral
 
 - (void)prepareForClosePhotoBrowser {
+    // show statusBar
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    
     // Gesture
     [_applicationWindow removeGestureRecognizer:_panGesture];
     
@@ -1210,6 +1214,9 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
             _senderViewForAnimation = newSenderView;
             _senderViewForAnimation.hidden = YES;
             _senderViewOriginalFrame = [newSenderView.superview convertRect:newSenderView.frame toView:nil];
+            if (self.shouldHideStatusBar) {
+                _senderViewOriginalFrame.origin = CGPointMake(_senderViewOriginalFrame.origin.x, _senderViewOriginalFrame.origin.y + [UIApplication sharedApplication].statusBarFrame.size.height);
+            }
         }
     }
 }
