@@ -192,7 +192,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         
         _isTriggledLongPressGesture = NO;
         
-        _dismissStyle = IDMPhotoBrowserDismissStyleOnlySenderOriginal;
+        _dismissStyle = IDMPhotoBrowserDismissStyleAllOriginal;
         
         if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)])
             self.automaticallyAdjustsScrollViewInsets = NO;

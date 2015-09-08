@@ -14,14 +14,14 @@
 #import "IDMCaptionView.h"
 
 typedef NS_ENUM(NSInteger, IDMPhotoBrowserDismissStyle) {
-    // default style with no scale animation when dismiss
-    IDMPhotoBrowserDismissStyleNone,
+    // dismiss with no scale animation when dismiss
+    IDMPhotoBrowserDismissStyleNone = -1,
+    
+    // scale to original frame when dismiss with all index ,when use this style delegate must implemention -photoBrowser: senderViewAtIndex:
+    IDMPhotoBrowserDismissStyleAllOriginal,
     
     // scale to original frame when dismiss with the sender index
     IDMPhotoBrowserDismissStyleOnlySenderOriginal,
-    
-    // scale to original frame when dismiss with all index
-    IDMPhotoBrowserDismissStyleAllOriginal,
 };
 
 // Delgate
