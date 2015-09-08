@@ -192,6 +192,8 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         
         _isTriggledLongPressGesture = NO;
         
+        _dismissStyle = IDMPhotoBrowserDismissStyleOnlySenderOriginal;
+        
         if ([self respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)])
             self.automaticallyAdjustsScrollViewInsets = NO;
         
@@ -315,7 +317,9 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     if ([(UIPanGestureRecognizer*)sender state] == UIGestureRecognizerStateEnded) {
         if(scrollView.center.y > viewHalfHeight+40 || scrollView.center.y < viewHalfHeight-40) // Automatic Dismiss View
         {
-            if (_senderViewForAnimation /*&& _currentPageIndex == _initalPageIndex*/) {
+            if (_senderViewForAnimation && ((self.dismissStyle == IDMPhotoBrowserDismissStyleAllOriginal &&
+                                             _initalPageIndex == _currentPageIndex)||
+                                            self.dismissStyle == IDMPhotoBrowserDismissStyleAllOriginal)) {
                 [self performCloseAnimationWithScrollView:scrollView];
                 return;
             }
@@ -401,8 +405,9 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 #pragma mark singleTapHanle
 - (void) singleTapHandle {
-    IDMZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
-    [self performCloseAnimationWithScrollView:scrollView];
+//    IDMZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
+//    [self performCloseAnimationWithScrollView:scrollView];
+    [self doneButtonPressed:nil];
 }
 
 #pragma mark - Animation
@@ -1325,17 +1330,23 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 #pragma mark - Buttons
 
 - (void)doneButtonPressed:(id)sender {
-    if (_senderViewForAnimation /*&& _currentPageIndex == _initalPageIndex*/) {
+    if (_senderViewForAnimation && ((_currentPageIndex == _initalPageIndex&&
+                                     self.dismissStyle == IDMPhotoBrowserDismissStyleOnlySenderOriginal)||
+                                    self.dismissStyle == IDMPhotoBrowserDismissStyleAllOriginal)) {
+        
         IDMZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
         [self performCloseAnimationWithScrollView:scrollView];
     }
     else {
+        //1
+        BOOL animated = self.dismissStyle != IDMPhotoBrowserDismissStyleNone;
+        
+        //2
         _senderViewForAnimation.hidden = NO;
         [self prepareForClosePhotoBrowser];
-        [self dismissPhotoBrowserAnimated:YES];
+        [self dismissPhotoBrowserAnimated:animated];
     }
 }
-
 - (void)actionButtonPressed:(id)sender {
     id <IDMPhoto> photo = [self photoAtIndex:_currentPageIndex];
     

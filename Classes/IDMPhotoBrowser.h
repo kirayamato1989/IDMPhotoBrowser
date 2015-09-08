@@ -13,6 +13,17 @@
 #import "IDMPhotoProtocol.h"
 #import "IDMCaptionView.h"
 
+typedef NS_ENUM(NSInteger, IDMPhotoBrowserDismissStyle) {
+    // default style with no scale animation when dismiss
+    IDMPhotoBrowserDismissStyleNone,
+    
+    // scale to original frame when dismiss with the sender index
+    IDMPhotoBrowserDismissStyleOnlySenderOriginal,
+    
+    // scale to original frame when dismiss with all index
+    IDMPhotoBrowserDismissStyleAllOriginal,
+};
+
 // Delgate
 @class IDMPhotoBrowser;
 @protocol IDMPhotoBrowserDelegate <NSObject>
@@ -53,6 +64,9 @@
 @property (nonatomic) BOOL forceHideStatusBar;
 @property (nonatomic) BOOL usePopAnimation;
 @property (nonatomic) BOOL disableVerticalSwipe;
+
+// dismissStyle
+@property (nonatomic, assign) IDMPhotoBrowserDismissStyle dismissStyle;
 
 // defines zooming of the background (default 1.0)
 @property (nonatomic) float backgroundScaleFactor;
