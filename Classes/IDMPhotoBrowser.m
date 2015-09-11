@@ -491,16 +491,8 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     //显示statusBar
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
-//    _senderViewOriginalFrame = [_senderViewForAnimation.superview convertRect:_senderViewForAnimation.frame toView:nil];
-//    
-//    float fadeAlpha = 1 - fabs(scrollView.frame.origin.y)/scrollView.frame.size.height;
-//    
-//    UIImage *imageFromView = [scrollView.photo underlyingImage];
-//    
-//    //use placeholderImage
-//    if (!imageFromView&&[scrollView.photo respondsToSelector:@selector(placeholder)]) {
-//        imageFromView = [scrollView.photo placeholder];
-//    }
+    //calculate originalFrame
+    _senderViewOriginalFrame = [_senderViewForAnimation.superview convertRect:_senderViewForAnimation.frame toView:nil];
     
     float fadeAlpha = 1 - fabs(scrollView.frame.origin.y)/scrollView.frame.size.height;
     
@@ -1215,10 +1207,6 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
                 _senderViewForAnimation.hidden = NO;
                 _senderViewForAnimation = newSenderView;
                 _senderViewForAnimation.hidden = YES;
-                _senderViewOriginalFrame = [newSenderView.superview convertRect:newSenderView.frame toView:nil];
-                if (self.shouldHideStatusBar) {
-                    _senderViewOriginalFrame.origin = CGPointMake(_senderViewOriginalFrame.origin.x, _senderViewOriginalFrame.origin.y + [UIApplication sharedApplication].statusBarFrame.size.height);
-                }
             }
         }
     }
