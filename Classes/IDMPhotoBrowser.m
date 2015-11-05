@@ -7,12 +7,14 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 #import "IDMPhotoBrowser.h"
 #import "IDMZoomingScrollView.h"
 
 #import "pop/POP.h"
 
 #import "MBProgressHUD.h"
+#import "UIImage+Data.h"
 
 #ifndef IDMPhotoBrowserLocalizedStrings
 #define IDMPhotoBrowserLocalizedStrings(key) \
@@ -379,19 +381,6 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         _saveImageActionSheet = [[UIActionSheet alloc] initWithTitle:@"选择操作" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"保存图片", nil];
     }
     [_saveImageActionSheet showInView:self.view];
-}
-
-- (void) image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
-    if (!error) {
-        self.saveImageHud.labelText = @"图片保存成功";
-        [self.saveImageHud show:YES];
-        [self.saveImageHud hide:YES afterDelay:1.f];
-    }
-    else{
-        self.saveImageHud.labelText = @"图片保存失败";
-        [self.saveImageHud show:YES];
-        [self.saveImageHud hide:YES afterDelay:1.f];
-    }
 }
 
 - (MBProgressHUD *) saveImageHud {
@@ -1423,7 +1412,22 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         if (buttonIndex == 0) {
             IDMZoomingScrollView *scrollView = [self pageDisplayedAtIndex:_currentPageIndex];
             UIImage *imageToSave = [scrollView.photo underlyingImage];
-            UIImageWriteToSavedPhotosAlbum(imageToSave, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+            
+            NSData *data = [UIImage convertImageIntoData:imageToSave error:nil];
+            
+            __weak typeof(self) weakSelf = self;
+            [[[ALAssetsLibrary alloc] init] writeImageDataToSavedPhotosAlbum:data metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+                if (!error) {
+                    weakSelf.saveImageHud.labelText = @"图片保存成功";
+                    [weakSelf.saveImageHud show:YES];
+                    [weakSelf.saveImageHud hide:YES afterDelay:1.f];
+                }
+                else{
+                    weakSelf.saveImageHud.labelText = @"图片保存失败";
+                    [weakSelf.saveImageHud show:YES];
+                    [weakSelf.saveImageHud hide:YES afterDelay:1.f];
+                }
+            }];
         }
         _isTriggledLongPressGesture = NO;
     }
