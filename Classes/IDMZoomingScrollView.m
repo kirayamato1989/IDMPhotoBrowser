@@ -216,7 +216,11 @@
 	// Set
 	self.maximumZoomScale = maxScale;
 	self.minimumZoomScale = minScale;
-	self.zoomScale = minScale;
+	
+    
+    // Scale to display image to full width
+    CGFloat fullWidthScale = [UIScreen mainScreen].bounds.size.width/imageSize.width;
+    self.zoomScale = fullWidthScale;
     
 	// Reset position
 	_photoImageView.frame = CGRectMake(0, 0, _photoImageView.frame.size.width, _photoImageView.frame.size.height);
@@ -253,6 +257,11 @@
 	// Center
 	if (!CGRectEqualToRect(_photoImageView.frame, frameToCenter))
 		_photoImageView.frame = frameToCenter;
+}
+
+
+- (void)fitWidthToFullScreen {
+    
 }
 
 #pragma mark - UIScrollViewDelegate

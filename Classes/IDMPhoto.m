@@ -147,7 +147,7 @@ caption = _caption;
             // Load async from web (using SDWebImage)
             SDWebImageManager *manager = [SDWebImageManager sharedManager];
              [manager downloadImageWithURL:_photoURL
-                                                       options:SDWebImageContinueInBackground
+                                                       options:SDWebImageContinueInBackground|SDWebImageRetryFailed
                                                       progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                                                           if (expectedSize > 0) {
                                                               CGFloat progress = ((CGFloat)expectedSize)/((CGFloat)expectedSize);
