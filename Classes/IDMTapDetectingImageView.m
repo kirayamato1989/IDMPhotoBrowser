@@ -8,6 +8,18 @@
 
 #import "IDMTapDetectingImageView.h"
 
+@interface IDMTapDetectingImageView ()
+
+@property (nonatomic, strong) UIImage *cacheImage;
+
+@property (nonatomic, strong) NSTimer *refreshTimer;
+
+@property (nonatomic, assign) NSTimeInterval showNextImageDuration;
+
+@property (nonatomic, assign) NSTimeInterval currentDuration;
+
+@end
+
 @implementation IDMTapDetectingImageView
 
 @synthesize tapDelegate;
@@ -66,5 +78,51 @@
 	if ([tapDelegate respondsToSelector:@selector(imageView:tripleTapDetected:)])
 		[tapDelegate imageView:self tripleTapDetected:touch];
 }
+
+#pragma mark GIF
+
+- (void)setImage:(UIImage *)image {
+    self.cacheImage = image;
+    self.currentDuration = 0.f;
+    self.showNextImageDuration = 0.f;
+    [self.refreshTimer invalidate];
+    self.refreshTimer = nil;
+    
+    
+    if (image.images.count > 1) {
+        [super setImage:image.images[0]];
+        self.showNextImageDuration = [image.images[0] duration];
+        self.refreshTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(shouldShowNextImage) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:self.refreshTimer forMode:NSDefaultRunLoopMode];
+        [self.refreshTimer fire];
+    }
+    else {
+        [super setImage:image];
+    }
+}
+
+- (UIImage *)image {
+    return self.cacheImage;
+}
+
+- (void)shouldShowNextImage {
+    self.currentDuration += 0.1;
+    if (self.currentDuration >= self.showNextImageDuration) {
+        UIImage *currentImage = [super image];
+        NSUInteger index = [self.cacheImage.images indexOfObject:currentImage];
+        NSUInteger nextIndex = index == self.cacheImage.images.count - 1?0:index + 1;
+        UIImage *nextImage = self.cacheImage.images[nextIndex];
+        
+        [super setImage:nextImage];
+        
+        // reset the next duration
+        self.showNextImageDuration = nextImage.duration;
+        
+        // reset to zero
+        self.currentDuration = 0.f;
+    }
+}
+
+
 
 @end
