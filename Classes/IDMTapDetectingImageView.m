@@ -7,6 +7,7 @@
 //
 
 #import "IDMTapDetectingImageView.h"
+#import "NSTimer+IDMBlcok.h"
 
 @interface IDMTapDetectingImageView ()
 
@@ -43,6 +44,14 @@
 		self.userInteractionEnabled = YES;
 	}
 	return self;
+}
+
+- (void)dealloc {
+    if (_refreshTimer) {
+        [_refreshTimer invalidate];
+        _refreshTimer = nil;
+    }
+    _cacheImage = nil;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -92,7 +101,13 @@
     if (image.images.count > 1) {
         [super setImage:image.images[0]];
         self.showNextImageDuration = [image.images[0] duration];
-        self.refreshTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(shouldShowNextImage) userInfo:nil repeats:YES];
+        __weak typeof(self) weakSelf = self;
+        self.refreshTimer = [NSTimer timerWithTimeInterval:0.1 repeats:YES block:^{
+            __strong typeof(weakSelf) sSelf = weakSelf;
+            if (sSelf) {
+                [sSelf shouldShowNextImage];
+            }
+        }];
         [[NSRunLoop currentRunLoop] addTimer:self.refreshTimer forMode:NSDefaultRunLoopMode];
         [self.refreshTimer fire];
     }

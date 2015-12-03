@@ -52,6 +52,7 @@
 		D1A1935D1758F42A00CE615F /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A1935C1758F42A00CE615F /* MobileCoreServices.framework */; };
 		D1B43D551721876000D8B807 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1B43D541721875F00D8B807 /* QuartzCore.framework */; };
 		D1FA3A911805C340000FFE18 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1FA3A901805C340000FFE18 /* Security.framework */; };
+		D61159801C10180400544C75 /* NSTimer+IDMBlcok.m in Sources */ = {isa = PBXBuildFile; fileRef = D611597F1C10180400544C75 /* NSTimer+IDMBlcok.m */; };
 		D627D5521BEB401A007C42FC /* UIImage+Data.m in Sources */ = {isa = PBXBuildFile; fileRef = D627D5511BEB401A007C42FC /* UIImage+Data.m */; };
 		D627D5541BEB41AD007C42FC /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D627D5531BEB41AD007C42FC /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
@@ -117,6 +118,8 @@
 		D1A1935C1758F42A00CE615F /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		D1B43D541721875F00D8B807 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D1FA3A901805C340000FFE18 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		D611597E1C10180400544C75 /* NSTimer+IDMBlcok.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+IDMBlcok.h"; sourceTree = "<group>"; };
+		D611597F1C10180400544C75 /* NSTimer+IDMBlcok.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+IDMBlcok.m"; sourceTree = "<group>"; };
 		D627D5501BEB401A007C42FC /* UIImage+Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Data.h"; sourceTree = "<group>"; };
 		D627D5511BEB401A007C42FC /* UIImage+Data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Data.m"; sourceTree = "<group>"; };
 		D627D5531BEB41AD007C42FC /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -260,6 +263,8 @@
 			children = (
 				D627D5501BEB401A007C42FC /* UIImage+Data.h */,
 				D627D5511BEB401A007C42FC /* UIImage+Data.m */,
+				D611597E1C10180400544C75 /* NSTimer+IDMBlcok.h */,
+				D611597F1C10180400544C75 /* NSTimer+IDMBlcok.m */,
 				D157494E178DB94900B0211A /* IDMCaptionView.h */,
 				D157494F178DB94900B0211A /* IDMCaptionView.m */,
 				D11464B61802FFC4005B7BC3 /* IDMPBConstants.h */,
@@ -437,6 +442,7 @@
 			files = (
 				4C6F979E14AF734900F8389A /* main.m in Sources */,
 				4C6F97A214AF734900F8389A /* AppDelegate.m in Sources */,
+				D61159801C10180400544C75 /* NSTimer+IDMBlcok.m in Sources */,
 				4C6F97B314AF737E00F8389A /* Menu.m in Sources */,
 				D1574968178DB94900B0211A /* IDMCaptionView.m in Sources */,
 				D1574969178DB94900B0211A /* IDMPhoto.m in Sources */,
